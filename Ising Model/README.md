@@ -15,6 +15,11 @@ Arguments are lattice width `N`, coupling constant `J`, starting temperature, en
 
 The program prints the lattice parameters and a summary for each temperature, including average magnetization and relaxation iterations. It writes temperature and magnetization pairs to `data.txt` in the current working directory, replacing that file if it already exists.
 
+## Visuals
+
+- `magnetization_vs_temperature_coupling_comparison.jpeg` plots average magnetization against temperature for several coupling values.
+- `spin_lattice_simulation.mp4` shows a visualization of the spin lattice evolving during a simulation.
+
 ## Notes
 
 The initial spin configuration and update choices are random, so results can differ between runs. The program does not accept a random seed as an argument.
