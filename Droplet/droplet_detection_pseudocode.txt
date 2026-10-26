@@ -1,0 +1,67 @@
+START
+
+1. Check if the filename is given as command line argument
+   IF no filename provided THEN
+       Print usage message
+       Exit program
+
+2. Open the file for reading
+
+3. Initialize arrays or lists to store data columns:
+   x_values = []
+   y_values = []
+
+4. WHILE not end of file
+       Read line
+       Extract column 1 into x_value
+       Extract column 2 into y_value
+       Append x_value to x_values
+       Append y_value to y_values
+
+5. Close the file
+
+6. Initialize variables:
+   peaks = []         // To store peak indices
+   previous_peak_location = 0
+
+7. Peak detection loop:
+   FOR i from 1 to length of y_values - 2 DO
+       IF y_values[i] > y_values[i-1] AND y_values[i] > y_values[i+1] THEN
+           Add i to peaks
+
+8. Print header: "Location    Width    Separation"
+
+9. For each peak in peaks:
+   - peak_index = current peak index
+   - peak_location = x_values[peak_index]
+   - peak_height = y_values[peak_index]
+   - half_max = peak_height / 2
+
+   // Find left crossing of half max
+   - left_index = peak_index
+   WHILE left_index > 0 AND y_values[left_index] > half_max DO
+       left_index = left_index - 1
+   END WHILE
+   left_location = x_values[left_index]
+
+   // Find right crossing of half max
+   - right_index = peak_index
+   WHILE right_index < length of y_values - 1 AND y_values[right_index] > half_max DO
+       right_index = right_index + 1
+   END WHILE
+   right_location = x_values[right_index]
+
+   - width = right_location - left_location
+
+   - IF this is the first peak THEN
+       separation = 0
+     ELSE
+       separation = peak_location - previous_peak_location
+
+   - Print peak_location, width, separation
+
+   - Update previous_peak_location = peak_location
+
+END FOR
+
+END

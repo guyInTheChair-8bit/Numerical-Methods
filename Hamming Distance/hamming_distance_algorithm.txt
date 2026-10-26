@@ -1,0 +1,88 @@
+BEGIN main:
+    take as command line input the sizes N, a location d < (N-M), a probability p (between 0 and 1) and a codeword of M-bits using argc and **argv 
+    check if the given inputs are valid // we will store all the bit information using unsigned char 
+    
+    srand(NULL)
+    block = create_block(N)
+    replace_with_codeword(block)
+    flip_based_on_prob(p, block, N)
+    hamming_list = create_hamming_list(block,codeword)
+    print d and H from hamming_list in two columns with serial no's on the side
+
+END main 
+
+BEGIN create_block (input: N):
+    
+    required_no_of_bytes = (N+7)/8
+
+    char *block = use calloc to assign the required number of bytes and initialize all of them to zero
+
+    BEGIN for (i = 0, i < N, i++):
+        
+        r = rand() % 2
+        if (r == 1) :
+            
+            byte_index = i / 8
+            bit_index = i % 8
+
+            bit = 1 << bit_index
+            block[byte_index] = block[byte_index] | bit 
+    END for 
+
+    return block
+END create_block
+
+BEGIN replace_with_codeword (input: block , location, size_of_codeword, codeword //take as reference as we will directly change the contents of the original block):
+   
+   BEGIN for (i = 0, i < size_of_codeword, i++):
+        target_index = location + i 
+        
+        byte_index = target_index / 8
+        bit_index = target_index % 8 
+
+        mask = 1 << bit_index
+
+        if (codeword[i] == '1'):
+            block[byte_index] = block[byte_index] | mask 
+        else if (codeword[i] == '0'):
+            block[byte_index] = block[byte_index] & (~mask)
+        
+    END for 
+END replace_with_codeword
+
+BEGIN flip_based_on_prob (input: probability, block, N):
+    r = rand() / RAND_MAX 
+    no_of_bytes = (N+7)/8
+    if (r > probability):
+        return 
+    else:
+        BEGIN for (i = 0, i < no_of_bytes, i++):
+            block[i] = ~block[i]
+        END for 
+END flip_based_on_prob
+
+BEGIN create_hamming_list(block, codeword,N, M)
+    int ham_dist=0
+    BEGIN for ( i=0 , i<N-M , i++)
+        int ham_dist=0
+        byte_index= i / 8
+        bit_index= i % 8
+        for (j=0 ; j<M;j++)
+            global_bit_position = i + j
+            block_byte_index = global_bit_position / 8
+            block_bit_index_in_byte = global_bit_position % 8
+            block_bit = (block[block_byte_index] >> block_bit_index_in_byte) & 1
+            codeword_char = codeword[j]
+            codeword_bit = (codeword_char == '1') ? 1 : 0
+            k = codeword_bit ^ block_bit
+            if k==1;
+                ham_dist++
+        push (i, ham_dist) as a struct into a list A
+    END for
+    arrange the elements in the list in increasing order of hamming distance
+    return list A
+END create_hamming_list
+
+
+
+

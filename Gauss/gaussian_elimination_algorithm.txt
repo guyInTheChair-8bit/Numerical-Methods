@@ -1,0 +1,27 @@
+BEGIN main:
+    create a 2d array called "M" of size N x N+1 taking data from a file that contains N rows and N+1 columns separated by spaces
+
+    create another matrix: X[0 .. N-1] to store the final solutions after back substitution
+
+    //forward elimination 
+    BEGIN for (p = 0; p < N-1; p++):
+        BEGIN for (i = p+1; i < N; i++):
+            BEGIN for (j = 0; j < N+1; j++):
+                M[i][j] = M[i][j] - (M[i][p]/M[p][p]) * M[p][j]
+            END for 
+        END for
+    END for 
+
+    //back substitution
+    BEGIN for (i = N-1; i >= 0; i--):
+        X[i] = M[i][N]
+        BEGIN for (j = N-1; j > i; j--):
+            X[i] -= M[i][j] * X[j]
+        END for 
+        X[i] = X[i]/M[i][i]
+    END for 
+
+    print array X with index numbers and values 
+END main
+            
+
